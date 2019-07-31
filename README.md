@@ -1,2 +1,0 @@
-TurkAnime-Downloader
-====================

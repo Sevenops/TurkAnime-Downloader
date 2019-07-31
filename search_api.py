@@ -1,7 +1,6 @@
 import httpx,os,re
 
 class TurkAnime:
-    
     url="http://www.turkanime.tv/"
     cookies = {
         '__cfduid': 'deb9e04ac510c1b707412b1fd7daadec91564216182',
@@ -27,6 +26,7 @@ class TurkAnime:
  
     def __init__(self):
         pass
+
     def anime_ara(self,ara):
         
         data = {
@@ -38,6 +38,7 @@ class TurkAnime:
         for slug,_,title in r:
             liste.append([title,slug])
         return liste
+
     def bolumler(self,slug):
         veri=httpx.get(self.url+"/anime/"+slug, headers=self.headers, cookies=self.cookies).content.decode("utf8")
         h=self.headers.copy()
@@ -49,16 +50,3 @@ class TurkAnime:
         for slug,_,title in r:
             liste.append([title,slug])
         return liste
-    def deneme(self):
-        h=self.headers.copy()
-        h.update({"X-Requested-With":"XMLHttpRequest","Accept":"*/*"})
-        url="http://www.turkanime.tv/ajax/videosec&b=tmti2rx5zQSA6qfdEHN9qKDtjK9ofy4lapT2SxY9l6c&v=0ommhLpH_LSEiQPqizi1_blqmdNCkrdzkDbbUs5ftEo&f=kvLxEP-QJkVNREiSNmb9iX397m9OqncJvJcxKlt1NGg"
-        a=httpx.get(url,headers=h,cookies=self.cookies).content.decode("utf8")
-        a=httpx.get("http://www.turkanime.tv/iframe?url=Sk3SXAueRmkPY_ghJ9h0kv-utaoKPi4lKnaUvyh2S40DY3JOMHfyTRcil1NK6lXPKaM38Ah0oJy3sZYl_lhMAkk2EOpkUxbfIbWXRw_dBcXizkJGj5pIaChARkz5NPZq884i7Cq-mwwWjvkOoIqUvkoTQhC_JAC9wPaRt6d79cuQVWPYIvLGaWlwC38cqMy2YyakI3pu0NGd-y7a7ODkjzzNlWqKjzhzRN0QLHRQRlCyteI0TmrJTxebjbTjVNdN",headers=h,cookies=self.cookies).content.decode("utf8")
-        print(a)
-if __name__=="__main__":
-    t=TurkAnime()
-    anime=t.anime_ara("Naruto")[0]#Aramadaki ilk sonuç
-    
-    #print(t.bolumler(anime[1]))
-    t.deneme()
