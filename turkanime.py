@@ -1,29 +1,31 @@
+from Crypto.Cipher import AES
 import httpx
 import os
 import re
 
-from Crypto.Cipher import AES
 import base64
 from urllib.parse import unquote
 import hashlib
 
 
 def decode_iframe(a):
-    # Fonksiyonun sahibi gokaybiz
-    a = {"ct": "P5rh7okRVe0uBsN+M8LCi11SFSnojXxDAv88ZX7TQtMYslz0OAWF+KPAA2d1uQES",
-         "iv": "94d71d7bc0975ec13724edabf2fe1885", "s": "48a8c852f99b1ee6"}
 
-    p = b"7Q+5&VnG1a{)-UWd)u$_}TiXINqCw|1HG,qfQvDgbK>W(O)m 2^B{5U|@+%tQ<;F"
-    salt = bytes.fromhex(a["s"])
-    ct = base64.b64decode(a["ct"])
-    iv = bytes.fromhex(a["iv"])
-    cp = p+salt
-    md5 = []
-    m = hashlib.md5()
-    m.update(cp)
-    md5.append(m.digest())
-    result = md5[0]
-    for x in range(3):
+  from Crypto.Cipher import AES
+  # Fonksiyonun sahibi gokaybiz
+  a = {"ct": "P5rh7okRVe0uBsN+M8LCi11SFSnojXxDAv88ZX7TQtMYslz0OAWF+KPAA2d1uQES",
+       "iv": "94d71d7bc0975ec13724edabf2fe1885", "s": "48a8c852f99b1ee6"}
+
+  p = b"7Q+5&VnG1a{)-UWd)u$_}TiXINqCw|1HG,qfQvDgbK>W(O)m 2^B{5U|@+%tQ<;F"
+  salt = bytes.fromhex(a["s"])
+  ct = base64.b64decode(a["ct"])
+  iv = bytes.fromhex(a["iv"])
+  cp = p+salt
+  md5 = []
+  m = hashlib.md5()
+  m.update(cp)
+  md5.append(m.digest())
+  result = md5[0]
+   for x in range(3):
         m = hashlib.md5()
         m.update(md5[x]+cp)
         md5.append(m.digest())
@@ -100,7 +102,7 @@ class TurkAnime:
         h = self.headers.copy()
         h.update({"X-Requested-With": "XMLHttpRequest", "Accept": "*/*"})
         url = "http://www.turkanime.tv/ajax/videosec&b=eTodJK2BS5KTMnDUiV3Dw3AIJ_k6yMwZ1fkyk1uZD5M&v=PThSgK5ErnD1t4PDUH488Y6gYyxpOZqbrhx9B-ao-XE&f=kvLxEP-QJkVNREiSNmb9iX397m9OqncJvJcxKlt1NGg"
-        #url = "http://www.turkanime.tv/iframe?url=NF_1ZgbJgUy1K2JT8EJE1HnFKwWq6yYmPV31ZhtRXJC1UqjjJ7TJuYn3INrkuZMU5VJ2s9dh6NZJGREVq84I-hG2O71V8uDcXUZzggi0uUhdzcOhvrS813MJPiltPjUeuhGMxySXpPB1cOMXYOL9hz1zh5Eq_0P8CPEvGGpe1mVYwXQ8Nhb2_noWFBVObWJgYDeyL-FH6pS7bB5-PIp8UA&sec=1"
+        # url = "http://www.turkanime.tv/iframe?url=NF_1ZgbJgUy1K2JT8EJE1HnFKwWq6yYmPV31ZhtRXJC1UqjjJ7TJuYn3INrkuZMU5VJ2s9dh6NZJGREVq84I-hG2O71V8uDcXUZzggi0uUhdzcOhvrS813MJPiltPjUeuhGMxySXpPB1cOMXYOL9hz1zh5Eq_0P8CPEvGGpe1mVYwXQ8Nhb2_noWFBVObWJgYDeyL-FH6pS7bB5-PIp8UA&sec=1"
 
         a = httpx.get(url, headers=h,
                       cookies=self.cookies).content.decode("utf8")
