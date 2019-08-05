@@ -1,4 +1,3 @@
-
 import httpx
 import os
 import re
@@ -9,7 +8,6 @@ import hashlib
 
 
 def decode_iframe(a):
-
   from Crypto.Cipher import AES
   # Fonksiyonun sahibi gokaybiz
   a = {"ct": "P5rh7okRVe0uBsN+M8LCi11SFSnojXxDAv88ZX7TQtMYslz0OAWF+KPAA2d1uQES",
@@ -25,16 +23,16 @@ def decode_iframe(a):
   m.update(cp)
   md5.append(m.digest())
   result = md5[0]
-   for x in range(3):
-        m = hashlib.md5()
-        m.update(md5[x]+cp)
-        md5.append(m.digest())
-        result += md5[x+1]
-    key = result[0:32]
-    obj = AES.new(key, AES.MODE_CBC, iv)
-    message = ct
-    a = obj.decrypt(ct)
-    return a.strip().decode("utf8").replace('\/', '/')
+  for x in range(3):
+    m = hashlib.md5()
+    m.update(md5[x]+cp)
+    md5.append(m.digest())
+    result += md5[x+1]
+  key = result[0:32]
+  obj = AES.new(key, AES.MODE_CBC, iv)
+  message = ct
+  a = obj.decrypt(ct)
+  return a.strip().decode("utf8").replace('\/', '/')
 
 
 class TurkAnime:
@@ -112,6 +110,7 @@ class TurkAnime:
         print(a)
         a = httpx.get("http://www.turkanime.tv/iframe?url=Sk3SXAueRmkPY_ghJ9h0kv-utaoKPi4lKnaUvyh2S40DY3JOMHfyTRcil1NK6lXPKaM38Ah0oJy3sZYl_lhMAkk2EOpkUxbfIbWXRw_dBcXizkJGj5pIaChARkz5NPZq884i7Cq-mwwWjvkOoIqUvkoTQhC_JAC9wPaRt6d79cuQVWPYIvLGaWlwC38cqMy2YyakI3pu0NGd-y7a7ODkjzzNlWqKjzhzRN0QLHRQRlCyteI0TmrJTxebjbTjVNdN", headers=h, cookies=self.cookies).content.decode("utf8")
         # print(a)
+
 
 
 if __name__ == "__main__":
