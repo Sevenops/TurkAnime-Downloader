@@ -8,31 +8,31 @@ import hashlib
 
 
 def decode_iframe(a):
-  from Crypto.Cipher import AES
-  # Fonksiyonun sahibi gokaybiz
-  a = {"ct": "P5rh7okRVe0uBsN+M8LCi11SFSnojXxDAv88ZX7TQtMYslz0OAWF+KPAA2d1uQES",
-       "iv": "94d71d7bc0975ec13724edabf2fe1885", "s": "48a8c852f99b1ee6"}
+    from Crypto.Cipher import AES
+    # Fonksiyonun sahibi gokaybiz
+    a = {"ct": "P5rh7okRVe0uBsN+M8LCi11SFSnojXxDAv88ZX7TQtMYslz0OAWF+KPAA2d1uQES",
+         "iv": "94d71d7bc0975ec13724edabf2fe1885", "s": "48a8c852f99b1ee6"}
 
-  p = b"7Q+5&VnG1a{)-UWd)u$_}TiXINqCw|1HG,qfQvDgbK>W(O)m 2^B{5U|@+%tQ<;F"
-  salt = bytes.fromhex(a["s"])
-  ct = base64.b64decode(a["ct"])
-  iv = bytes.fromhex(a["iv"])
-  cp = p+salt
-  md5 = []
-  m = hashlib.md5()
-  m.update(cp)
-  md5.append(m.digest())
-  result = md5[0]
-  for x in range(3):
+    p = b"7Q+5&VnG1a{)-UWd)u$_}TiXINqCw|1HG,qfQvDgbK>W(O)m 2^B{5U|@+%tQ<;F"
+    salt = bytes.fromhex(a["s"])
+    ct = base64.b64decode(a["ct"])
+    iv = bytes.fromhex(a["iv"])
+    cp = p+salt
+    md5 = []
     m = hashlib.md5()
-    m.update(md5[x]+cp)
+    m.update(cp)
     md5.append(m.digest())
-    result += md5[x+1]
-  key = result[0:32]
-  obj = AES.new(key, AES.MODE_CBC, iv)
-  message = ct
-  a = obj.decrypt(ct)
-  return a.strip().decode("utf8").replace('\/', '/')
+    result = md5[0]
+    for x in range(3):
+        m = hashlib.md5()
+        m.update(md5[x]+cp)
+        md5.append(m.digest())
+        result += md5[x+1]
+    key = result[0:32]
+    obj = AES.new(key, AES.MODE_CBC, iv)
+    message = ct
+    a = obj.decrypt(ct)
+    return a.strip().decode("utf8").replace('\/', '/')
 
 
 class TurkAnime:
@@ -77,8 +77,12 @@ class TurkAnime:
         for slug, _, title in r:
             liste.append([title, slug])
         if len(liste) == 0:
-            slug = veri.split('window.location = "anime/')[1].split('"')[0]
-            liste.append([ara, slug])
+            try:
+                print(veri)
+                slug = veri.split('window.location = "anime/')[1].split('"')[0]
+                liste.append([ara, slug])
+            except:
+                pass
         return liste
 
     def bolumler(self, slug):
@@ -112,8 +116,7 @@ class TurkAnime:
         # print(a)
 
 
-
 if __name__ == "__main__":
     t = TurkAnime()
-    anime = t.anime_ara("angel beats")
+    anime = t.anime_ara("şeytan")
     print(anime)
