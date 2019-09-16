@@ -80,7 +80,7 @@ class TurkAnime:
 
     def anime_ara(self, ara):
 
-        data = {"arama": "naruto"}
+        data = {"arama": ara}
         veri = httpx.post(
             self.url + "/arama", headers=headers, cookies=cookies, data=data
         ).content.decode("utf-8")
