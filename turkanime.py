@@ -7,39 +7,6 @@ import base64
 from urllib.parse import unquote
 import hashlib
 
-
-def decode_iframe(a):
-    from Crypto.Cipher import AES
-
-    # Fonksiyonun sahibi gokaybiz
-    a = {
-        "ct": "P5rh7okRVe0uBsN+M8LCi11SFSnojXxDAv88ZX7TQtMYslz0OAWF+KPAA2d1uQES",
-        "iv": "94d71d7bc0975ec13724edabf2fe1885",
-        "s": "48a8c852f99b1ee6",
-    }
-
-    p = b"7Q+5&VnG1a{)-UWd)u$_}TiXINqCw|1HG,qfQvDgbK>W(O)m 2^B{5U|@+%tQ<;F"
-    salt = bytes.fromhex(a["s"])
-    ct = base64.b64decode(a["ct"])
-    iv = bytes.fromhex(a["iv"])
-    cp = p + salt
-    md5 = []
-    m = hashlib.md5()
-    m.update(cp)
-    md5.append(m.digest())
-    result = md5[0]
-    for x in range(3):
-        m = hashlib.md5()
-        m.update(md5[x] + cp)
-        md5.append(m.digest())
-        result += md5[x + 1]
-    key = result[0:32]
-    obj = AES.new(key, AES.MODE_CBC, iv)
-    message = ct
-    a = obj.decrypt(ct)
-    return a.strip().decode("utf8").replace("\/", "/")
-
-
 cookies = {
     "__cfduid": "deb9e04ac510c1b707412b1fd7daadec91564216182",
     "yew490": "1",
@@ -120,21 +87,3 @@ class TurkAnime:
         for slug, _, title in r:
             liste.append([title, slug])
         return liste
-
-    def deneme(self):
-        h = headers.copy()
-        h.update({"X-Requested-With": "XMLHttpRequest", "Accept": "*/*"})
-        url = "http://www.turkanime.net/ajax/videosec&b=eTodJK2BS5KTMnDUiV3Dw3AIJ_k6yMwZ1fkyk1uZD5M&v=PThSgK5ErnD1t4PDUH488Y6gYyxpOZqbrhx9B-ao-XE&f=kvLxEP-QJkVNREiSNmb9iX397m9OqncJvJcxKlt1NGg"
-        # url = "http://www.turkanime.tv/iframe?url=NF_1ZgbJgUy1K2JT8EJE1HnFKwWq6yYmPV31ZhtRXJC1UqjjJ7TJuYn3INrkuZMU5VJ2s9dh6NZJGREVq84I-hG2O71V8uDcXUZzggi0uUhdzcOhvrS813MJPiltPjUeuhGMxySXpPB1cOMXYOL9hz1zh5Eq_0P8CPEvGGpe1mVYwXQ8Nhb2_noWFBVObWJgYDeyL-FH6pS7bB5-PIp8UA&sec=1"
-
-        a = httpx.get(url, headers=h, cookies=cookies).content.decode("utf8")
-        video = "http:" + a.split('<iframe src="')[1].split('"')[0]
-        a = httpx.get(video, headers=h, cookies=cookies).content.decode("utf8")
-        print(a)
-        a = httpx.get(
-            "http://www.turkanime.net/iframe?url=Sk3SXAueRmkPY_ghJ9h0kv-utaoKPi4lKnaUvyh2S40DY3JOMHfyTRcil1NK6lXPKaM38Ah0oJy3sZYl_lhMAkk2EOpkUxbfIbWXRw_dBcXizkJGj5pIaChARkz5NPZq884i7Cq-mwwWjvkOoIqUvkoTQhC_JAC9wPaRt6d79cuQVWPYIvLGaWlwC38cqMy2YyakI3pu0NGd-y7a7ODkjzzNlWqKjzhzRN0QLHRQRlCyteI0TmrJTxebjbTjVNdN",
-            headers=h,
-            cookies=cookies,
-        ).content.decode("utf8")
-        # print(a)
-
