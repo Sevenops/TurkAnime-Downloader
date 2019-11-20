@@ -52,12 +52,12 @@ cookies = {
 headers = {
     "Connection": "keep-alive",
     "Cache-Control": "max-age=0",
-    "Origin": "http://www.turkanime.tv",
+    "Origin": "http://www.turkanime.net",
     "Upgrade-Insecure-Requests": "1",
     "Content-Type": "application/x-www-form-urlencoded",
     "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36",
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3",
-    "Referer": "http://www.turkanime.tv/",
+    "Referer": "http://www.turkanime.net/",
     "Accept-Encoding": "gzip, deflate",
     "Accept-Language": "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7",
 }
@@ -65,7 +65,7 @@ headers = {
 
 class TurkAnime:
 
-    url = "http://www.turkanime.tv"
+    url = "http://www.turkanime.net"
     nekilCookie = None
 
     def __init__(self):
@@ -86,7 +86,7 @@ class TurkAnime:
         ).content.decode("utf-8")
         liste = []
         r = re.findall(
-            '<div class="panel-ust-ic"><div class="panel-title"><a href="\/\/www\.turkanime\.tv\/anime\/(.*?)" (.*?)>(.*?)<\/a>',
+            '<div class="panel-ust-ic"><div class="panel-title"><a href="\/\/www\.turkanime\.net\/anime\/(.*?)" (.*?)>(.*?)<\/a>',
             veri,
         )
 
@@ -109,12 +109,12 @@ class TurkAnime:
         animeId = veri.split("ajax/bolumler&animeId=")[1].split('"')[0]
         liste = []
         a = httpx.get(
-            f"http://www.turkanime.tv/ajax/bolumler&animeId={animeId}",
+            f"http://www.turkanime.net/ajax/bolumler&animeId={animeId}",
             headers=h,
             cookies=cookies,
         ).content.decode("utf8")
         r = re.findall(
-            '<a href="\/\/www\.turkanime\.tv\/video\/(.*?)" (.*?)><span class="bolumAdi">(.*?)<\/span><\/a>',
+            '<a href="\/\/www\.turkanime\.net\/video\/(.*?)" (.*?)><span class="bolumAdi">(.*?)<\/span><\/a>',
             a,
         )
         for slug, _, title in r:
@@ -124,7 +124,7 @@ class TurkAnime:
     def deneme(self):
         h = headers.copy()
         h.update({"X-Requested-With": "XMLHttpRequest", "Accept": "*/*"})
-        url = "http://www.turkanime.tv/ajax/videosec&b=eTodJK2BS5KTMnDUiV3Dw3AIJ_k6yMwZ1fkyk1uZD5M&v=PThSgK5ErnD1t4PDUH488Y6gYyxpOZqbrhx9B-ao-XE&f=kvLxEP-QJkVNREiSNmb9iX397m9OqncJvJcxKlt1NGg"
+        url = "http://www.turkanime.net/ajax/videosec&b=eTodJK2BS5KTMnDUiV3Dw3AIJ_k6yMwZ1fkyk1uZD5M&v=PThSgK5ErnD1t4PDUH488Y6gYyxpOZqbrhx9B-ao-XE&f=kvLxEP-QJkVNREiSNmb9iX397m9OqncJvJcxKlt1NGg"
         # url = "http://www.turkanime.tv/iframe?url=NF_1ZgbJgUy1K2JT8EJE1HnFKwWq6yYmPV31ZhtRXJC1UqjjJ7TJuYn3INrkuZMU5VJ2s9dh6NZJGREVq84I-hG2O71V8uDcXUZzggi0uUhdzcOhvrS813MJPiltPjUeuhGMxySXpPB1cOMXYOL9hz1zh5Eq_0P8CPEvGGpe1mVYwXQ8Nhb2_noWFBVObWJgYDeyL-FH6pS7bB5-PIp8UA&sec=1"
 
         a = httpx.get(url, headers=h, cookies=cookies).content.decode("utf8")
@@ -132,7 +132,7 @@ class TurkAnime:
         a = httpx.get(video, headers=h, cookies=cookies).content.decode("utf8")
         print(a)
         a = httpx.get(
-            "http://www.turkanime.tv/iframe?url=Sk3SXAueRmkPY_ghJ9h0kv-utaoKPi4lKnaUvyh2S40DY3JOMHfyTRcil1NK6lXPKaM38Ah0oJy3sZYl_lhMAkk2EOpkUxbfIbWXRw_dBcXizkJGj5pIaChARkz5NPZq884i7Cq-mwwWjvkOoIqUvkoTQhC_JAC9wPaRt6d79cuQVWPYIvLGaWlwC38cqMy2YyakI3pu0NGd-y7a7ODkjzzNlWqKjzhzRN0QLHRQRlCyteI0TmrJTxebjbTjVNdN",
+            "http://www.turkanime.net/iframe?url=Sk3SXAueRmkPY_ghJ9h0kv-utaoKPi4lKnaUvyh2S40DY3JOMHfyTRcil1NK6lXPKaM38Ah0oJy3sZYl_lhMAkk2EOpkUxbfIbWXRw_dBcXizkJGj5pIaChARkz5NPZq884i7Cq-mwwWjvkOoIqUvkoTQhC_JAC9wPaRt6d79cuQVWPYIvLGaWlwC38cqMy2YyakI3pu0NGd-y7a7ODkjzzNlWqKjzhzRN0QLHRQRlCyteI0TmrJTxebjbTjVNdN",
             headers=h,
             cookies=cookies,
         ).content.decode("utf8")
