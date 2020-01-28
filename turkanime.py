@@ -33,7 +33,6 @@ class TurkAnime:
 
     url = "http://www.turkanime.net"
 
-
     def anime_ara(self, ara):
 
         data = {"arama": ara}

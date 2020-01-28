@@ -3,6 +3,7 @@ from turkanime import TurkAnime
 
 
 class TestSum(unittest.TestCase):
+
     def test_animeler(self):
         t = TurkAnime()
         animeler = t.anime_ara("naruto")
